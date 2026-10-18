@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Олимп — алгебра и информатика</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/app.js"></script>
+</head>
+<body>
+
+<button
+  id="theme-toggle"
+  class="theme-toggle"
+  type="button"
+  aria-label="Включить тёмную тему"
+  aria-pressed="false"
+>
+  <span id="theme-icon" aria-hidden="true">☾</span>
+  <span id="theme-label">Тёмная тема</span>
+</button>
+
+<div id="auth-view" class="auth-layout">
+  <section class="auth-story">
+    <a class="brand" href="/">
+      <span class="brand-icon">∑</span>
+      олимп<span class="brand-dot">.</span>
+    </a>
+
+    <div class="auth-art" aria-hidden="true">
+      <span class="art-circle"></span>
+      <span class="art-math">x + y</span>
+      <span class="art-code">{ }</span>
+      <span class="art-cross">✳</span>
+    </div>
+
+    <div class="auth-caption">
+      <h1>Есть задача.<br>Будет решение<span>.</span></h1>
+      <p>
+        Алгебра и информатика.<br>
+        24 задачи с подробными разборами.
+      </p>
+    </div>
+  </section>
+
+  <section class="auth-panel">
+    <div class="auth-box">
+      <p class="eyebrow">ОЛИМПИАДНАЯ ПОДГОТОВКА</p>
+      <h2 id="auth-title">С возвращением</h2>
+      <p id="auth-description" class="muted">Войди в свой аккаунт.</p>
+
+      <div class="auth-tabs" role="group" aria-label="Режим входа">
+        <button id="login-tab" type="button" class="active">Вход</button>
+        <button id="register-tab" type="button">Регистрация</button>
+      </div>
+
+      <form id="auth-form">
+        <label for="username">Логин</label>
+        <input
+          id="username"
+          name="username"
+          autocomplete="username"
+          placeholder="Твой логин"
+          required
+          minlength="3"
+          maxlength="32"
+          pattern="[A-Za-z0-9_]{3,32}"
+          aria-describedby="login-hint"
+        >
+        <small id="login-hint">
+          3–32 латинские буквы, цифры или _
+        </small>
+
+        <label for="password">Пароль</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="От 8 символов"
+          minlength="8"
+          maxlength="128"
+          required
+        >
+
+        <p id="auth-error" class="error" role="alert"></p>
+
+        <button class="primary full" id="auth-submit">
+          Войти <span>↗</span>
+        </button>
+      </form>
+
+      <p class="auth-note">
+        Прогресс и история сохраняются в аккаунте.
+      </p>
+    </div>
+  </section>
+</div>
+
+<div id="app-view" class="app-layout" hidden>
+  <aside class="sidebar">
+    <a class="brand" href="/">
+      <span class="brand-icon">∑</span>
+      олимп<span class="brand-dot">.</span>
+    </a>
+
+    <div class="sidebar-caption">ОЛИМПИАДЫ</div>
+
+    <nav aria-label="Основная навигация">
+      <button
+        data-page="tasks"
+        data-subject="Алгебра"
+        class="nav-item active"
+      >
+        <span class="nav-icon">ƒ</span>
+        Алгебра
+      </button>
+
+      <button
+        data-page="tasks"
+        data-subject="Информатика"
+        class="nav-item"
+      >
+        <span class="nav-icon code-icon">{ }</span>
+        Информатика
+      </button>
+
+      <div class="nav-divider"></div>
+
+      <button data-page="history" class="nav-item">
+        <span class="nav-icon">◷</span>
+        История попыток
+      </button>
+
+      <button data-page="leaderboard" class="nav-item">
+        <span class="nav-icon">♜</span>
+        Рейтинг
+      </button>
+    </nav>
+
+    <div class="sidebar-spacer"></div>
+
+    <div class="sidebar-user">
+      <button
+        id="profile-open"
+        class="profile-open"
+        aria-label="Открыть личный кабинет"
+      >
+        <span id="avatar" class="avatar">У</span>
+        <span class="user-details">
+          <strong id="sidebar-name"></strong>
+          <small>Личный кабинет ↗</small>
+        </span>
+      </button>
+
+      <button
+        id="logout"
+        class="icon-button"
+        title="Выйти"
+        aria-label="Выйти из аккаунта"
+      >↪</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="breadcrumb">
+        <span>Олимп</span>
+        <span>/</span>
+        <strong id="breadcrumb-current">Алгебра</strong>
+      </div>
+    </header>
+
+    <div class="content">
+      <div
+        id="global-error"
+        class="error global-error"
+        role="alert"
+      ></div>
+
+      <section id="page-tasks">
+        <div class="catalog-intro">
+          <div class="intro-copy">
+            <p class="eyebrow" id="catalog-kicker">МАТЕМАТИКА / 01</p>
+
+            <h1 id="catalog-title">
+              Олимпиада<br>по алгебре<span>.</span>
+            </h1>
+
+            <p class="muted" id="catalog-description">
+              От простых уравнений к неожиданным закономерностям.
+            </p>
+
+            <div
+              class="subject-tabs"
+              role="group"
+              aria-label="Олимпиада"
+            >
+              <button data-subject="Алгебра" class="active">
+                Алгебра
+              </button>
+              <button data-subject="Информатика">
+                Информатика
+              </button>
+            </div>
+          </div>
+
+          <div class="intro-graphic" aria-hidden="true">
+            <span class="graphic-ring"></span>
+            <span class="graphic-ring inner"></span>
+            <span id="graphic-symbol" class="graphic-symbol">x²</span>
+            <span class="graphic-star">✳</span>
+            <span class="graphic-dot"></span>
+          </div>
+        </div>
+
+        <div class="progress-strip">
+          <div>
+            <strong id="stat-solved">0</strong>
+            <span>
+              решено из <b id="stat-total">12</b> в разделе
+            </span>
+          </div>
+
+          <span class="strip-divider"></span>
+
+          <div>
+            <strong id="stat-points">0</strong>
+            <span>баллов всего</span>
+          </div>
+
+          <div class="strip-progress">
+            <div class="progress-track">
+              <div id="progress-fill"></div>
+            </div>
+            <span id="stat-progress">0%</span>
+          </div>
+        </div>
+
+        <div class="catalog-toolbar">
+          <div class="search-box">
+            <span aria-hidden="true">⌕</span>
+            <input
+              id="task-search"
+              type="search"
+              placeholder="Название или сложность…"
+              aria-label="Поиск задач по названию или сложности"
+              autocomplete="off"
+            >
+          </div>
+
+          <div
+            id="filters"
+            class="filters"
+            role="group"
+            aria-label="Сложность"
+          >
+            <button data-filter="all" class="active">Все</button>
+            <button data-filter="easy">Лёгкие</button>
+            <button data-filter="medium">Средние</button>
+            <button data-filter="hard">Сложные</button>
+          </div>
+        </div>
+
+        <div class="list-heading">
+          <span>ЗАДАЧИ</span>
+          <span id="task-count"></span>
+        </div>
+
+        <div id="task-list" class="task-list"></div>
+
+        <p class="catalog-note">
+          1 задача = 1 балл, если верный ответ отправлен до просмотра разбора.
+        </p>
+      </section>
+
+      <section id="page-profile" hidden>
+        <p class="eyebrow">АККАУНТ</p>
+
+        <div class="profile-heading">
+          <span id="profile-avatar" class="avatar large"></span>
+          <div>
+            <h1 id="profile-title">Личный кабинет</h1>
+            <p class="muted">
+              Твои результаты и изученные решения.
+            </p>
+          </div>
+        </div>
+
+        <div id="profile-stats" class="profile-stats"></div>
+
+        <div class="section-title">
+          <h2>Решённые задачи</h2>
+          <span class="muted">
+            Баллы только за самостоятельные решения
+          </span>
+        </div>
+
+        <div id="solved-list"></div>
+      </section>
+
+      <section id="page-history" hidden>
+        <p class="eyebrow">ПРАКТИКА</p>
+        <h1>История попыток<span>.</span></h1>
+        <p class="muted">
+          Все отправленные ответы — от первого до последнего.
+        </p>
+        <div id="history-table" class="table-wrap"></div>
+      </section>
+
+      <section id="page-leaderboard" hidden>
+        <p class="eyebrow">УЧАСТНИКИ</p>
+        <h1>Рейтинг<span>.</span></h1>
+        <p class="muted">
+          По одному баллу за задачу, решённую до просмотра разбора.
+        </p>
+        <div id="leaderboard-table" class="table-wrap"></div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<dialog id="task-dialog" aria-labelledby="dialog-title">
+  <div class="dialog-top">
+    <span id="dialog-badge" class="badge"></span>
+    <button
+      id="close-dialog"
+      class="icon-button"
+      aria-label="Закрыть задачу"
+    >×</button>
+  </div>
+
+  <p id="dialog-subject" class="eyebrow"></p>
+  <h2 id="dialog-title"></h2>
+  <p id="dialog-statement" class="statement"></p>
+  <p id="task-score-note" class="score-note"></p>
+
+  <form id="answer-form">
+    <label for="answer">Твой ответ</label>
+
+    <div class="answer-controls">
+      <input
+        id="answer"
+        name="answer"
+        placeholder="Введи ответ"
+        maxlength="200"
+        required
+        autocomplete="off"
+      >
+      <button id="answer-submit" class="primary">
+        Проверить ↗
+      </button>
+    </div>
+
+    <small>
+      Только ответ, без единиц измерения.
+      Пробелы по краям не учитываются.
+    </small>
+
+    <p
+      id="answer-result"
+      class="result"
+      role="status"
+      aria-live="polite"
+    ></p>
+  </form>
+
+  <div class="solution-section">
+    <button id="reveal-open" class="solution-button" type="button">
+      <span>◉</span>
+      Ответ и разбор
+      <span>↓</span>
+    </button>
+
+    <div id="reveal-confirm" class="reveal-confirm" hidden>
+      <h3>Открыть решение?</h3>
+      <p>
+        Если открыть разбор до первого верного ответа,
+        балл за эту задачу получить уже нельзя.
+        Начисленные баллы сохраняются.
+      </p>
+
+      <div class="confirm-actions">
+        <button id="reveal-cancel" class="secondary" type="button">
+          Попробую сам
+        </button>
+        <button
+          id="reveal-confirm-button"
+          class="primary"
+          type="button"
+        >
+          Открыть без балла
+        </button>
+      </div>
+    </div>
+
+    <p id="solution-error" class="error" role="alert"></p>
+
+    <section id="solution-content" class="solution-content" hidden>
+      <p class="eyebrow">ПРАВИЛЬНЫЙ ОТВЕТ</p>
+      <strong id="solution-answer"></strong>
+      <h3>Как это решить</h3>
+      <p id="solution-explanation"></p>
+      <p id="solution-note" class="solution-note"></p>
+    </section>
+  </div>
+</dialog>
+
+</body>
+</html>
